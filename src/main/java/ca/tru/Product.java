@@ -99,8 +99,25 @@ public class Product implements Category, PasswordLockable, Comparable<Product> 
 
     @Override
     public String getCategoryName() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCategoryName'");
+        switch (category) {
+            case UNCLASSIFIED:
+                return "Unclassified";
+
+            case DAIRY:
+                return "Dairy";
+
+            case MEAT:
+                return "Meat";
+
+            case VEGETABLE:
+                return "Vegetable";
+
+            case FRUIT:
+                return "Fruit";
+
+            default:
+                throw new IllegalStateException("Unknown Catergory Code:" + category);
+        }
     }
 
     public String toString() {
