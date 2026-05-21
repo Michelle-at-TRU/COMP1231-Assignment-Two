@@ -40,7 +40,7 @@ public class Product implements Category, PasswordLockable, Comparable<Product> 
     }
 
     public String getProductCode() {
-        throw new UnsupportedOperationException("Unimplemented method");
+        return productCode;
     }
 
     public Product setPrice(double price) {
@@ -48,7 +48,7 @@ public class Product implements Category, PasswordLockable, Comparable<Product> 
     }
 
     public double getPrice() {
-        throw new UnsupportedOperationException("Unimplemented method");
+        return price;
     }
 
     @Override
@@ -94,8 +94,7 @@ public class Product implements Category, PasswordLockable, Comparable<Product> 
 
     @Override
     public int getCategory() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCategory'");
+        return category;
     }
 
     @Override
