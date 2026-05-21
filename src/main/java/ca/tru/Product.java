@@ -9,13 +9,31 @@ public class Product implements Category, PasswordLockable, Comparable<Product> 
     // description is used more like product name, I don't want to change the name
     // since the assignment gave it to me
     private String description;
-    private double price;
     private int category;
+    private double price;
     private String password;
     private boolean productIsLocked = false;
 
     // TODO setters should only work if unlocked
     // TODO compareTo should be used to determine lowest price
+
+    Product(String productCode) {
+        this.productCode = productCode;
+        this.description = "Unknown";
+        this.category = 0;
+        this.price = 0.00;
+        // I like having an incomplete constructor, but this seems to be the test
+        // exhibit's default state
+    }
+
+    Product(String productCode, String description, int category, double price, String password) {
+        this.productCode = productCode;
+        this.description = description;
+        this.category = category;
+        this.price = price;
+        this.password = password;
+        lock(password);
+    }
 
     public Product setProductCode(String code) {
         throw new UnsupportedOperationException("Unimplemented method");
