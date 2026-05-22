@@ -1,5 +1,7 @@
 package ca.tru;
 
+import java.nio.file.AccessDeniedException;
+
 public class Product implements Category, PasswordLockable, Comparable<Product> {
 
     // I don't like this being mutable, but the assignment specifically wants it to
@@ -35,8 +37,11 @@ public class Product implements Category, PasswordLockable, Comparable<Product> 
         lock(password);
     }
 
-    public Product setProductCode(String code) {
-        throw new UnsupportedOperationException("Unimplemented method");
+    public Product setProductCode(String productCode) {
+        if (isLocked())
+            throw new SecurityException(getExceptionMessage("Code"));
+        this.productCode = productCode;
+        return this;
     }
 
     public String getProductCode() {
@@ -44,7 +49,10 @@ public class Product implements Category, PasswordLockable, Comparable<Product> 
     }
 
     public Product setPrice(double price) {
-        throw new UnsupportedOperationException("Unimplemented method");
+        if (isLocked())
+            throw new SecurityException(getExceptionMessage("Price"));
+        this.price = price;
+        return this;
     }
 
     public double getPrice() {
@@ -53,26 +61,32 @@ public class Product implements Category, PasswordLockable, Comparable<Product> 
 
     @Override
     public int compareTo(Product arg0) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'compareTo'");
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public PasswordLockable setPassword(String password) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setPassword'");
+        if (isLocked())
+            throw new SecurityException(getExceptionMessage("Password"));
+        this.password = password;
+        return this;
     }
 
     @Override
     public PasswordLockable lock(String password) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'lock'");
+        if (!this.password.equals(password))
+            throw new SecurityException(
+                    "Attempted to Lock with wrong password, and locking requires a password for some reason");
+        this.productIsLocked = true;
+        return this;
     }
 
     @Override
     public PasswordLockable unlock(String password) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'unlock'");
+        if (!this.password.equals(password))
+            throw new SecurityException("Attempted to Unlock with wrong password");
+        this.productIsLocked = false;
+        return this;
     }
 
     @Override
@@ -82,8 +96,10 @@ public class Product implements Category, PasswordLockable, Comparable<Product> 
 
     @Override
     public Category setCategory(int categoryID) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setCategory'");
+        if (isLocked())
+            throw new SecurityException();
+        this.category = categoryID;
+        return this;
     }
 
     @Override
@@ -123,6 +139,11 @@ public class Product implements Category, PasswordLockable, Comparable<Product> 
     public String toString() {
         return "Product Code:" + productCode + "\t Description:" + description + "\t Price:$"
                 + String.format("%.2f", price) + "\t Category:" + getCategoryName();
+    }
+
+    private String getExceptionMessage(String variableAttemptedToChange) {
+        return "Cannot change Product" + variableAttemptedToChange
+                + " while product is locked. Please unlock product to try again.";
     }
 
 }
