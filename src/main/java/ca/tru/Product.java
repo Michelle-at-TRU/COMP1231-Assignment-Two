@@ -97,15 +97,43 @@ public class Product implements Category, PasswordLockable, Comparable<Product> 
     @Override
     public Category setCategory(int categoryID) {
         if (isLocked())
-            throw new SecurityException();
+            throw new SecurityException(getExceptionMessage("Category"));
         this.category = categoryID;
         return this;
     }
 
     @Override
     public Category setCategory(String categoryName) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setCategory'");
+        if (isLocked())
+            throw new SecurityException(getExceptionMessage("Category"));
+        categoryName = categoryName.toLowerCase();
+
+        switch (categoryName) {
+            case "unclassified":
+                setCategory(UNCLASSIFIED);
+                break;
+
+            case "meat":
+                setCategory(MEAT);
+                break;
+
+            case "vegetable":
+                setCategory(VEGETABLE);
+                break;
+
+            case "dairy":
+                setCategory(DAIRY);
+                break;
+
+            case "fruit":
+                setCategory(FRUIT);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown Category:" + categoryName);
+        }
+
+        return this;
     }
 
     @Override
