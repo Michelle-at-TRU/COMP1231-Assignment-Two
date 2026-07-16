@@ -16,15 +16,12 @@ public class Product implements Category, PasswordLockable, Comparable<Product> 
     private String password;
     private boolean productIsLocked = false;
 
-    // TODO setters should only work if unlocked
-    // TODO compareTo should be used to determine lowest price
-
     Product(String productCode) {
         this.productCode = productCode;
         this.description = "Unknown";
         this.category = 0;
         this.price = 0.00;
-        // I like having an incomplete constructor, but this seems to be the test
+        // I don't like having an incomplete constructor, but this seems to be the test
         // exhibit's default state
     }
 
@@ -61,7 +58,10 @@ public class Product implements Category, PasswordLockable, Comparable<Product> 
 
     @Override
     public int compareTo(Product arg0) {
-        throw new UnsupportedOperationException();
+        double priceDifference = price - arg0.price;
+        // double check math right
+        System.out.print(priceDifference);
+        return (int) Math.round(priceDifference);
     }
 
     @Override
